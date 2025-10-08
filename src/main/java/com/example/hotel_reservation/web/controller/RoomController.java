@@ -8,6 +8,7 @@ import com.example.hotel_reservation.web.model.room.UpsertRoomRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -32,17 +33,20 @@ public class RoomController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<RoomResponse> create(@RequestBody UpsertRoomRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(roomMapper.roomToResponse(roomService.create(roomMapper.requestToRoom(request))));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<RoomResponse> update(@PathVariable UUID id, @RequestBody UpsertRoomRequest request) {
         return ResponseEntity.ok(roomMapper.roomToResponse(roomService.update(roomMapper.requestToRoom(id, request))));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
         roomService.deleteById(id);
 

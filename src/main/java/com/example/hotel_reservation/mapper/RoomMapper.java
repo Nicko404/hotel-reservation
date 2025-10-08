@@ -19,7 +19,11 @@ public interface RoomMapper {
 
     Room requestToRoom(UpsertRoomRequest request);
 
-    Room requestToRoom(UUID id, UpsertRoomRequest request);
+    default Room requestToRoom(UUID id, UpsertRoomRequest request) {
+        var room = requestToRoom(request);
+        room.setId(id);
+        return room;
+    }
 
     @Mapping(source = "hotel.id", target = "hotelId")
     RoomResponse roomToResponse(Room room);

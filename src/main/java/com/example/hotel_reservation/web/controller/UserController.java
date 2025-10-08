@@ -25,7 +25,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.userToResponse(userService.getById(id)));
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<UserResponse> create(@RequestBody UpsertUserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(userMapper.userToResponse(userService.create(userMapper.requestToUser(request))));

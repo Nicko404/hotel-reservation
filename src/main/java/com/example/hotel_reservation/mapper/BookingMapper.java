@@ -20,7 +20,12 @@ public interface BookingMapper {
     })
     Booking requestToBooking(UpsertBookingRequest request);
 
-    Booking requestToBooking(UUID id, UpsertBookingRequest request);
+    default Booking requestToBooking(UUID id, UpsertBookingRequest request) {
+        var booking = requestToBooking(request);
+        booking.setId(id);
+
+        return booking;
+    }
 
     @Mappings({
             @Mapping(target = "checkIn", dateFormat = "yyyy-MM-dd HH:mm:ss"),

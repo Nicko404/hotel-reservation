@@ -8,6 +8,7 @@ import com.example.hotel_reservation.web.model.booking.UpsertBookingRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class BookingController {
     private final BookingMapper bookingMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<BookingListResponse> getAll() {
         return ResponseEntity.ok(bookingMapper.bookingListToBookingListResponse(bookingService.getAll()));
     }
