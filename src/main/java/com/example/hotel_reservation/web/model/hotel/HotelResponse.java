@@ -25,7 +25,7 @@ public class HotelResponse {
 
     private Integer distanceFromCenter;
 
-    private Integer rating;
+    private Double rating;
 
     private Integer numberOfRatings;
 }

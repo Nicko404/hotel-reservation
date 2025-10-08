@@ -7,6 +7,7 @@ import com.example.hotel_reservation.utils.BeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.UUID;
@@ -41,5 +42,32 @@ public class HotelService {
 
     public void deleteById(UUID id) {
         hotelRepository.deleteById(id);
+    }
+
+    public Hotel addRating(UUID hotelId, Double newMark) {
+        Hotel hotel = getById(hotelId);
+
+        Integer numberOfRating = hotel.getNumberOfRatings();
+
+        Double rating = calculateRating(hotel.getRating(), newMark, numberOfRating);
+
+        hotel.setRating(rating);
+        hotel.setNumberOfRatings(++numberOfRating);
+
+        return hotelRepository.save(hotel);
+    }
+
+    private Double calculateRating(Double rating, Double newMark, Integer numberOfRating) {
+        Double totalRating = null;
+
+        if (rating == 0 || numberOfRating == 0) {
+            rating = newMark;
+        } else {
+            totalRating = rating * numberOfRating;
+            totalRating = totalRating - rating + newMark;
+            rating = totalRating / numberOfRating;
+        }
+
+        return Math.round(rating * 10) / 10.0;
     }
 }

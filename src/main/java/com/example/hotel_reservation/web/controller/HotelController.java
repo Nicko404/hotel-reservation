@@ -32,6 +32,11 @@ public class HotelController {
         return ResponseEntity.ok(hotelMapper.hotelToResponse(hotelService.getById(id)));
     }
 
+    @PostMapping("/add-rating")
+    public ResponseEntity<HotelResponse> addRating(@RequestParam UUID hotelId, @RequestParam Double rating) {
+        return ResponseEntity.ok(hotelMapper.hotelToResponse(hotelService.addRating(hotelId, rating)));
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<HotelResponse> create(@RequestBody UpsertHotelRequest request) {

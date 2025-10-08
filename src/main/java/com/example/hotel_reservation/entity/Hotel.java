@@ -30,10 +30,12 @@ public class Hotel {
     @Column(name = "distance_from_center")
     private Integer distanceFromCenter;
 
-    private Integer rating;
+    @Builder.Default
+    private Double rating = 0d;
 
     @Column(name = "number_of_ratings")
-    private Integer numberOfRatings;
+    @Builder.Default
+    private Integer numberOfRatings = 0;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     @Builder.Default
