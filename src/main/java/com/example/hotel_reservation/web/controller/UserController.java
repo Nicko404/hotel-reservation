@@ -4,6 +4,7 @@ import com.example.hotel_reservation.mapper.UserMapper;
 import com.example.hotel_reservation.service.UserService;
 import com.example.hotel_reservation.web.model.user.UpsertUserRequest;
 import com.example.hotel_reservation.web.model.user.UserResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +27,13 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> create(@RequestBody UpsertUserRequest request) {
+    public ResponseEntity<UserResponse> create(@RequestBody @Valid UpsertUserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(userMapper.userToResponse(userService.create(userMapper.requestToUser(request))));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> update(@PathVariable UUID id, @RequestBody UpsertUserRequest request) {
+    public ResponseEntity<UserResponse> update(@PathVariable UUID id, @RequestBody @Valid UpsertUserRequest request) {
         return ResponseEntity.ok(userMapper.userToResponse(userService.update(userMapper.requestToUser(id, request))));
     }
 

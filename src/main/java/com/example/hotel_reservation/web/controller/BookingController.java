@@ -5,6 +5,7 @@ import com.example.hotel_reservation.service.BookingService;
 import com.example.hotel_reservation.web.model.booking.BookingListResponse;
 import com.example.hotel_reservation.web.model.booking.BookingResponse;
 import com.example.hotel_reservation.web.model.booking.UpsertBookingRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +30,13 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<BookingResponse> create(@RequestBody UpsertBookingRequest request) {
+    public ResponseEntity<BookingResponse> create(@RequestBody @Valid UpsertBookingRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(bookingMapper.bookingToResponse(bookingService.create(bookingMapper.requestToBooking(request))));
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<BookingResponse> update(@PathVariable UUID id, @RequestBody UpsertBookingRequest request) {
+    public ResponseEntity<BookingResponse> update(@PathVariable UUID id, @RequestBody @Valid UpsertBookingRequest request) {
         return ResponseEntity.ok(
                 bookingMapper.bookingToResponse(bookingService.update(bookingMapper.requestToBooking(id, request)))
         );

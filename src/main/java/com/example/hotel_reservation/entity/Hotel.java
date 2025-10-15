@@ -3,9 +3,7 @@ package com.example.hotel_reservation.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "hotels")
@@ -40,5 +38,12 @@ public class Hotel {
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     @Builder.Default
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Room> rooms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "hotel")
+    @Builder.Default
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<HotelRating> ratings = new HashSet<>();
 }

@@ -1,13 +1,15 @@
 package com.example.hotel_reservation.service;
 
 import com.example.hotel_reservation.entity.Hotel;
+import com.example.hotel_reservation.entity.HotelRating;
 import com.example.hotel_reservation.exception.EntityNotFoundException;
+import com.example.hotel_reservation.repository.HotelRatingRepository;
 import com.example.hotel_reservation.repository.HotelRepository;
+import com.example.hotel_reservation.repository.UserRepository;
 import com.example.hotel_reservation.utils.BeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +19,10 @@ import java.util.UUID;
 public class HotelService {
 
     private final HotelRepository hotelRepository;
+
+    private final HotelRatingRepository hotelRatingRepository;
+
+    private final UserRepository userRepository;
 
     public List<Hotel> getAll() {
         return hotelRepository.findAll();
@@ -44,21 +50,36 @@ public class HotelService {
         hotelRepository.deleteById(id);
     }
 
-    public Hotel addRating(UUID hotelId, Double newMark) {
-        Hotel hotel = getById(hotelId);
-
+    public Hotel addRating(HotelRating hotelRating) {
+        Hotel hotel = hotelRating.getHotel();
         Integer numberOfRating = hotel.getNumberOfRatings();
+        Double rating;
 
-        Double rating = calculateRating(hotel.getRating(), newMark, numberOfRating);
+        if (hotelRatingRepository.existsById(hotelRating.getId())) {
+            HotelRating existedHotelRating = hotelRatingRepository.findById(hotelRating.getId()).orElseThrow(
+                    () -> new EntityNotFoundException("RatingNoteFound!")
+            );
+
+            rating = recalculateRating(
+                    hotel.getRating(),
+                    Double.valueOf(existedHotelRating.getRating()),
+                    Double.valueOf(hotelRating.getRating()),
+                    numberOfRating);
+        } else {
+            rating = calculateRating(hotel.getRating(), Double.valueOf(hotelRating.getRating()), numberOfRating);
+            hotel.setNumberOfRatings(++numberOfRating);
+        }
 
         hotel.setRating(rating);
-        hotel.setNumberOfRatings(++numberOfRating);
+
+        hotelRatingRepository.save(hotelRating);
+        userRepository.save(hotelRating.getUser());
 
         return hotelRepository.save(hotel);
     }
 
     private Double calculateRating(Double rating, Double newMark, Integer numberOfRating) {
-        Double totalRating = null;
+        double totalRating;
 
         if (rating == 0 || numberOfRating == 0) {
             rating = newMark;
@@ -67,6 +88,14 @@ public class HotelService {
             totalRating = totalRating - rating + newMark;
             rating = totalRating / numberOfRating;
         }
+
+        return Math.round(rating * 10) / 10.0;
+    }
+
+    private Double recalculateRating(Double rating, Double oldMark, Double newMark, Integer numberOfRating) {
+        double totalRating = rating * numberOfRating;
+        totalRating = totalRating - oldMark + newMark;
+        rating = totalRating / numberOfRating;
 
         return Math.round(rating * 10) / 10.0;
     }

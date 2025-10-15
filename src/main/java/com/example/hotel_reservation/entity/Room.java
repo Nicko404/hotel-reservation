@@ -31,9 +31,10 @@ public class Room {
     @Column(name = "max_people_count")
     private Integer maxPeopleCount;
 
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     @Builder.Default
     @ToString.Exclude
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
     private List<Booking> bookings = new ArrayList<>();
 
     @ManyToOne

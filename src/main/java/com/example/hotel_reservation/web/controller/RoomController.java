@@ -5,6 +5,7 @@ import com.example.hotel_reservation.service.RoomService;
 import com.example.hotel_reservation.web.model.room.RoomListResponse;
 import com.example.hotel_reservation.web.model.room.RoomResponse;
 import com.example.hotel_reservation.web.model.room.UpsertRoomRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +35,14 @@ public class RoomController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<RoomResponse> create(@RequestBody UpsertRoomRequest request) {
+    public ResponseEntity<RoomResponse> create(@RequestBody @Valid UpsertRoomRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(roomMapper.roomToResponse(roomService.create(roomMapper.requestToRoom(request))));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<RoomResponse> update(@PathVariable UUID id, @RequestBody UpsertRoomRequest request) {
+    public ResponseEntity<RoomResponse> update(@PathVariable UUID id, @RequestBody @Valid UpsertRoomRequest request) {
         return ResponseEntity.ok(roomMapper.roomToResponse(roomService.update(roomMapper.requestToRoom(id, request))));
     }
 
