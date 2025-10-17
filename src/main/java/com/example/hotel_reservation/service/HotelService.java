@@ -6,8 +6,13 @@ import com.example.hotel_reservation.exception.EntityNotFoundException;
 import com.example.hotel_reservation.repository.HotelRatingRepository;
 import com.example.hotel_reservation.repository.HotelRepository;
 import com.example.hotel_reservation.repository.UserRepository;
+import com.example.hotel_reservation.repository.specification.HotelSpecification;
 import com.example.hotel_reservation.utils.BeanUtils;
+import com.example.hotel_reservation.web.model.hotel.HotelFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -23,6 +28,15 @@ public class HotelService {
     private final HotelRatingRepository hotelRatingRepository;
 
     private final UserRepository userRepository;
+
+    public Pair<List<Hotel>, Long> filterBy(HotelFilter hotelFilter) {
+
+        Page<Hotel> all = hotelRepository.findAll(
+                HotelSpecification.withFilter(hotelFilter),
+                PageRequest.of(hotelFilter.getPageNumber(), hotelFilter.getPageSize()));
+
+        return Pair.of(all.getContent(), all.getTotalElements());
+    }
 
     public List<Hotel> getAll() {
         return hotelRepository.findAll();

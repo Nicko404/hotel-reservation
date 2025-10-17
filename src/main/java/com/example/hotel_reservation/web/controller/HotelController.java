@@ -1,19 +1,19 @@
 package com.example.hotel_reservation.web.controller;
 
+import com.example.hotel_reservation.entity.Hotel;
 import com.example.hotel_reservation.mapper.HotelMapper;
 import com.example.hotel_reservation.mapper.HotelRatingMapper;
 import com.example.hotel_reservation.service.HotelService;
-import com.example.hotel_reservation.web.model.hotel.HotelListResponse;
-import com.example.hotel_reservation.web.model.hotel.HotelResponse;
-import com.example.hotel_reservation.web.model.hotel.UpsertHotelRequest;
-import com.example.hotel_reservation.web.model.hotel.UpsertRatingRequest;
+import com.example.hotel_reservation.web.model.hotel.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -26,6 +26,14 @@ public class HotelController {
     private final HotelMapper hotelMapper;
 
     private final HotelRatingMapper hotelRatingMapper;
+
+    @GetMapping("/filter-by")
+    public ResponseEntity<HotelFilterByResponse> filterBy(@RequestBody @Valid HotelFilter hotelFilter) {
+
+        Pair<List<Hotel>, Long> pair = hotelService.filterBy(hotelFilter);
+
+        return ResponseEntity.ok(hotelMapper.hotelListToHotelFilterByResponse(pair.getFirst(), pair.getSecond()));
+    }
 
     @GetMapping
     public ResponseEntity<HotelListResponse> getAll() {
