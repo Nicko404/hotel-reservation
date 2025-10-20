@@ -2,6 +2,7 @@ package com.example.hotel_reservation.web.controller;
 
 import com.example.hotel_reservation.mapper.RoomMapper;
 import com.example.hotel_reservation.service.RoomService;
+import com.example.hotel_reservation.web.model.room.RoomFilter;
 import com.example.hotel_reservation.web.model.room.RoomListResponse;
 import com.example.hotel_reservation.web.model.room.RoomResponse;
 import com.example.hotel_reservation.web.model.room.UpsertRoomRequest;
@@ -22,6 +23,11 @@ public class RoomController {
     private final RoomService roomService;
 
     private final RoomMapper roomMapper;
+
+    @GetMapping("/filter-by")
+    public ResponseEntity<RoomListResponse> filterBy(@RequestBody @Valid RoomFilter roomFilter) {
+        return ResponseEntity.ok(roomMapper.roomListToRoomListResponse(roomService.filterBy(roomFilter)));
+    }
 
     @GetMapping
     public ResponseEntity<RoomListResponse> getAll() {

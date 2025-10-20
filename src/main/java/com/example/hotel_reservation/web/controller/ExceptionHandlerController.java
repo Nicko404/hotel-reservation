@@ -1,5 +1,6 @@
 package com.example.hotel_reservation.web.controller;
 
+import com.example.hotel_reservation.exception.CantReserveRoomException;
 import com.example.hotel_reservation.exception.EntityAlreadyExistsException;
 import com.example.hotel_reservation.exception.EntityNotFoundException;
 import com.example.hotel_reservation.web.model.ErrorResponse;
@@ -39,5 +40,11 @@ public class ExceptionHandlerController {
     public ResponseEntity<ErrorResponse> alreadyExists(EntityAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(new ErrorResponse(ex.getLocalizedMessage(), HttpStatus.UNPROCESSABLE_ENTITY.value()));
+    }
+
+    @ExceptionHandler(CantReserveRoomException.class)
+    public ResponseEntity<ErrorResponse> cantReserveRoom(CantReserveRoomException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse(ex.getLocalizedMessage(), HttpStatus.CONFLICT.value()));
     }
 }

@@ -3,8 +3,11 @@ package com.example.hotel_reservation.service;
 import com.example.hotel_reservation.entity.Room;
 import com.example.hotel_reservation.exception.EntityNotFoundException;
 import com.example.hotel_reservation.repository.RoomRepository;
+import com.example.hotel_reservation.repository.specification.RoomSpecification;
 import com.example.hotel_reservation.utils.BeanUtils;
+import com.example.hotel_reservation.web.model.room.RoomFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -16,6 +19,12 @@ import java.util.UUID;
 public class RoomService {
 
     private final RoomRepository roomRepository;
+
+    public List<Room> filterBy(RoomFilter roomFilter) {
+        return roomRepository.findAll(RoomSpecification.withFilter(roomFilter),
+                        PageRequest.of(roomFilter.getPageNumber(), roomFilter.getPageSize()))
+                .getContent();
+    }
 
     public List<Room> getAll() {
         return roomRepository.findAll();
