@@ -10,8 +10,8 @@ public class RoomFilterValidValidator implements ConstraintValidator<RoomFilterV
     public boolean isValid(RoomFilter roomFilter, ConstraintValidatorContext constraintValidatorContext) {
         if (roomFilter.getPageNumber() == null && roomFilter.getPageSize() == null) return false;
 
-        if ((roomFilter.getCheckIn() == null && roomFilter.getDeparture() != null)
-                || (roomFilter.getCheckIn() != null && roomFilter.getDeparture() == null)) return false;
+        if ((roomFilter.getCheckIn() == null && roomFilter.getCheckOut() != null)
+                || (roomFilter.getCheckIn() != null && roomFilter.getCheckOut() == null)) return false;
 
         return true;
     }

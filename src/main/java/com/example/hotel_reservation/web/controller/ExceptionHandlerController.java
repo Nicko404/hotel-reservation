@@ -1,5 +1,6 @@
 package com.example.hotel_reservation.web.controller;
 
+import com.example.hotel_reservation.exception.CantCreateCSVFileException;
 import com.example.hotel_reservation.exception.CantReserveRoomException;
 import com.example.hotel_reservation.exception.EntityAlreadyExistsException;
 import com.example.hotel_reservation.exception.EntityNotFoundException;
@@ -46,5 +47,11 @@ public class ExceptionHandlerController {
     public ResponseEntity<ErrorResponse> cantReserveRoom(CantReserveRoomException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErrorResponse(ex.getLocalizedMessage(), HttpStatus.CONFLICT.value()));
+    }
+
+    @ExceptionHandler(CantCreateCSVFileException.class)
+    public ResponseEntity<ErrorResponse> cantCreateCSVFile(CantCreateCSVFileException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(ex.getLocalizedMessage(), HttpStatus.NOT_FOUND.value()));
     }
 }

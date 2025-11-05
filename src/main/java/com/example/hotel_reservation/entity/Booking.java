@@ -21,7 +21,8 @@ public class Booking {
     @Column(name = "check_in")
     private Date checkIn;
 
-    private Date departure;
+    @Column(name = "check_out")
+    private Date checkOut;
 
     @ManyToOne
     @JoinColumn(name = "room_id")

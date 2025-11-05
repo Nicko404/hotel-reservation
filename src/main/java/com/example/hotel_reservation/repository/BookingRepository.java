@@ -15,8 +15,8 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     List<Booking> findAllByUser(User user);
 
 
-    @Query(value = "SELECT COUNT(*) > 0 FROM bookings b WHERE b.room_id = :room_id AND NOT (b.departure <= :checkIn OR b.check_in >= :departure)", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) > 0 FROM bookings b WHERE b.room_id = :room_id AND NOT (b.check_out <= :checkIn OR b.check_in >= :checkOut)", nativeQuery = true)
     Boolean dateIsReserved(@Param("room_id") UUID roomId,
                            @Param("checkIn") Date checkIn,
-                           @Param("departure") Date departure);
+                           @Param("checkOut") Date checkOut);
 }

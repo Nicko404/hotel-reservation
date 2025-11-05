@@ -28,12 +28,12 @@ public abstract class BookingMapperDelegate implements BookingMapper {
         try {
             return Booking.builder()
                     .checkIn(formatter.parse(request.getCheckIn()))
-                    .departure(formatter.parse(request.getDeparture()))
+                    .checkOut(formatter.parse(request.getCheckOut()))
                     .room(roomService.getById(request.getRoomId()))
                     .user(userService.getById(request.getUserId()))
                     .build();
         } catch (ParseException ex) {
-            throw new WrongDateFormatException("The check in and departure fields must match the pattern 'yyyy-MM-dd HH:mm:ss'!");
+            throw new WrongDateFormatException("The check in and check out fields must match the pattern 'yyyy-MM-dd HH:mm:ss'!");
         }
     }
 }

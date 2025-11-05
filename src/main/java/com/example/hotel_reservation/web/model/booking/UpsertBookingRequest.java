@@ -18,8 +18,8 @@ public class UpsertBookingRequest {
     @NotBlank(message = "The check in date must be filled!")
     private String checkIn;
 
-    @NotBlank(message = "The departure date must be filled!")
-    private String departure;
+    @NotBlank(message = "The check out date must be filled!")
+    private String checkOut;
 
     @NotNull(message = "The room ID must be filled!")
     private UUID roomId;

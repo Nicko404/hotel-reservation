@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -18,7 +17,7 @@ public class BookingResponse {
 
     private String checkIn;
 
-    private String departure;
+    private String checkOut;
 
     private UUID roomId;
 

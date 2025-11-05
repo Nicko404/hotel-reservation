@@ -22,7 +22,7 @@ public interface RoomSpecification {
                 .and(byName(roomFilter.getName()))
                 .and(byCost(roomFilter.getMinCost(), roomFilter.getMaxCost()))
                 .and(byPeopleCount(roomFilter.getMaxPeopleCount()))
-                .and(byCheckInAndDeparture(roomFilter.getCheckIn(), roomFilter.getDeparture()))
+                .and(byCheckInAndCheckOut(roomFilter.getCheckIn(), roomFilter.getCheckOut()))
                 .and(byHotelId(roomFilter.getHotelId()));
     }
 
@@ -59,26 +59,26 @@ public interface RoomSpecification {
         };
     }
 
-    static Specification<Room> byCheckInAndDeparture(String checkIn, String departure) {
+    static Specification<Room> byCheckInAndCheckOut(String checkIn, String checkOut) {
         return (root, query, criteriaBuilder) -> {
-            if (checkIn == null || departure == null) return null;
+            if (checkIn == null || checkOut == null) return null;
 
             query.distinct(true);
             Join<Room, Booking> bookingJoin = root.join("bookings", JoinType.LEFT);
 
             try {
                 Date checkInDate = formatter.parse(checkIn);
-                Date departureDate = formatter.parse(departure);
+                Date checkOutDate = formatter.parse(checkOut);
 
                 bookingJoin.on(criteriaBuilder.and(
-                        criteriaBuilder.greaterThan(bookingJoin.get("departure"), checkInDate),
-                        criteriaBuilder.lessThan(bookingJoin.get("checkIn"), departureDate)
+                        criteriaBuilder.greaterThan(bookingJoin.get("checkOut"), checkInDate),
+                        criteriaBuilder.lessThan(bookingJoin.get("checkIn"), checkOutDate)
                 ));
 
                 return criteriaBuilder.isNull(bookingJoin.get("id"));
 
             } catch (ParseException ex) {
-                throw new WrongDateFormatException("The check in and departure fields must match the pattern 'yyyy-MM-dd HH:mm:ss'!");
+                throw new WrongDateFormatException("The check in and checkOut fields must match the pattern 'yyyy-MM-dd HH:mm:ss'!");
             }
         };
     }

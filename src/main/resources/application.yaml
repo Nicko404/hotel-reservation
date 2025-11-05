@@ -1,4 +1,7 @@
 spring:
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017/statisticdb?authSource=admin
   jpa:
     generate-ddl: true
   datasource:
@@ -9,3 +12,13 @@ spring:
       schema: app_schema
       connection-init-sql: CREATE SCHEMA IF NOT EXISTS app_schema
       connection-timeout: 10000
+  kafka:
+    bootstrap-servers: localhost:9092
+
+app:
+  event:
+    collection-name: events
+  kafka:
+    topics:
+      user-register: user-register
+      room-booking: room-booking

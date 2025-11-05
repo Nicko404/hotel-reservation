@@ -16,7 +16,7 @@ public interface BookingMapper {
 
     @Mappings({
             @Mapping(target = "checkIn", dateFormat = "yyyy-MM-dd HH:mm:ss"),
-            @Mapping(target = "departure", dateFormat = "yyyy-MM-dd HH:mm:ss")
+            @Mapping(target = "checkOut", dateFormat = "yyyy-MM-dd HH:mm:ss")
     })
     Booking requestToBooking(UpsertBookingRequest request);
 
@@ -29,7 +29,7 @@ public interface BookingMapper {
 
     @Mappings({
             @Mapping(target = "checkIn", dateFormat = "yyyy-MM-dd HH:mm:ss"),
-            @Mapping(target = "departure", dateFormat = "yyyy-MM-dd HH:mm:ss"),
+            @Mapping(target = "checkOut", dateFormat = "yyyy-MM-dd HH:mm:ss"),
             @Mapping(source = "room.id", target = "roomId"),
             @Mapping(source = "user.id", target = "userId")
     })

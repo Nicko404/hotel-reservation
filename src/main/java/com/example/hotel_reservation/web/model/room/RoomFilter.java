@@ -28,7 +28,7 @@ public class RoomFilter {
 
     private String checkIn;
 
-    private String departure;
+    private String checkOut;
 
     private UUID hotelId;
 
