@@ -1,13 +1,13 @@
-package com.example.holet_reservation;
+package com.example.hotel_reservation;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HoletReservationApplication {
+public class HotelReservationApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HoletReservationApplication.class, args);
+		SpringApplication.run(HotelReservationApplication.class, args);
 	}
 
 }

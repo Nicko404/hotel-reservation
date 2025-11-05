@@ -1,0 +1,19 @@
+package com.example.hotel_reservation.validation;
+
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+
+import java.lang.annotation.*;
+
+@Documented
+@Constraint(validatedBy = HotelFilterValidValidator.class)
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface HotelFilterValid {
+
+    String message() default "The page number and page size fields must be filled!";
+
+    Class<?> [] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}
